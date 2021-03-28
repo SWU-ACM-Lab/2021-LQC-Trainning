@@ -19,8 +19,8 @@ We have provided markdown files in `docs`. You can read `Summary.md` and then st
 
 ## License ##
 
-This repositories is licensed by `CC-BY-NC-SA 4.0`.
+This repository is licensed by `BSD-3-Clause License`.
 
-<center><img src = "https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png"></center>
+<center><img src = "https://upload.wikimedia.org/wikipedia/commons/d/d5/License_icon-bsd-88x31.svg" /></center>
 
 ## Contributions ##

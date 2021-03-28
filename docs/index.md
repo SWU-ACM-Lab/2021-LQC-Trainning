@@ -1,10 +1,10 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-25 14:51:11
- * @LastEditTime: 2021-03-29 04:02:44
+ * @LastEditTime: 2021-03-29 05:17:04
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: /2021-LQC-Trainning/docs/Summary.md
+ * @FilePath: /2021-LQC-Trainning/docs/index.md
 -->
 # 西南大学蓝桥杯参赛选手集训计划 #
 
@@ -16,7 +16,7 @@
 
 **第一周**
 
-+ [ ] C++基础巩固
++ [ ] [C++基础巩固](week-1/cpp-review.md)
     + [ ] 语法与结构	
     + [ ] 结构体、指针、数组
     + [ ] 基础数据结构

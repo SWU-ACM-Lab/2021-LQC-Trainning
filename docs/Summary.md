@@ -1,10 +1,10 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-25 14:51:11
- * @LastEditTime: 2021-03-29 04:00:20
+ * @LastEditTime: 2021-03-29 04:02:44
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: /undefined/Users/sunistchan/Desktop/Projects/2021/2021-LQC-Trainning/docs/Summary.md
+ * @FilePath: /2021-LQC-Trainning/docs/Summary.md
 -->
 # 西南大学蓝桥杯参赛选手集训计划 #
 

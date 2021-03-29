@@ -2,7 +2,7 @@
 
 > STL即标准模板库(Standard Template Library)，隶属于C++标准库，包含了一些常用的模板化的数据结构和算法。STL作为模板，拥有极强的兼容性和普适性，大大提高了我们编写代码的效率，使得其在各大算法比赛中都得到了广泛的应用。
 
-本文将STL的学习分为两个板块：`container`和`algorithm`，各个板块只介绍一些在ACM/ICPC等比赛中常用的函数和功能，若哪里有介绍错误还请同学们海涵。
+本文将STL的学习分为两个板块：`container`和`algorithm`，各个板块只介绍一些在ACM/ICPC等比赛中常用的函数和功能，如果哪里有内容错误还请同学们海涵和反馈。
 
 ## 容器container
 
@@ -28,11 +28,11 @@
 
 ```c++
 // 提示，T代表数据类型，可以是int/string/...，也可以是自己定义的数据类型
-vector<T> v1;	//定义一个空的vector v1,元素类型为T,这也是我们最常用的一种初始化方法
-vector<T> v2(v1);	//v2中包含v1所有元素的副本
-vector<T> v2 = v1;	//等价于v2(v1)
-vector<T> v3(n,val);	//v3包含了n个重复的元素，每个元素的值都是val
-vector<T> v4(n);	//v4包含了n个重复执行了值初始化的对象，换而言之就是规定了v4的size
+vector<T> v1;				//定义一个空的vector v1,元素类型为T,这也是我们最常用的一种初始化方法
+vector<T> v2(v1);			//v2中包含v1所有元素的副本
+vector<T> v2 = v1;			//等价于v2(v1)
+vector<T> v3(n,val);		//v3包含了n个重复的元素，每个元素的值都是val
+vector<T> v4(n);			//v4包含了n个重复执行了值初始化的对象，换而言之就是规定了v4的size
 vector<T> v5{a,b,c...};		//v5包含了初始化个数的元素，每个元素被赋予相应的初始值
 vector<T> v5={a,b,c...};	//等价于上条
 ```
@@ -172,7 +172,7 @@ for(int i=0;i<d.size();i++){
 >
 > `set`和数学概念中的集合含义相同，不允许容器中存在相同元素，若将要插入的元素在集合中存在，则无法插入。
 >
-> `set` 内部通常采用红黑树实现。平衡二叉树的特性使得 `set` 非常适合处理需要同时兼顾查找、插入与删除的情况，因为它的搜索、移除和插入均为对数复杂度$O(logn)$。
+> `set` 内部采用红黑树实现。平衡二叉树的特性使得 `set` 非常适合处理需要同时兼顾查找、插入与删除的情况，因为它的搜索、移除和插入均为对数复杂度$O(logn)$。
 
 #### Set的优良特性
 
@@ -227,11 +227,119 @@ set<int,MyCompare>s2;	////自定义排序方式，从大到小
 >
 > 当你需要返回成对出现的数据时，可能要用到pair嗷
 
+#### Pair使用方法
 
+- `p.first`：访问pair的第一个数据（key），该元素起到索引作用
+- `p.second`：访问pair的第二个数据（value）
 
+#### Pair创建方法
 
+pair的创建不需要头文件，以下是pair创建的两种方法
+
+- `pair<type, type> p ( value1, value2 )`
+- `pair<type, type> p = make_pair( value1, value2 )`
+
+```c++
+// 对这两种方法进行实例化演示
+pair<string,int>p("Tom",20);
+cout<<"name : "<<p.first<<endl;
+cout<<"age : "<<p.second<<endl;
+//第二种方式
+pair<string,int>p2=make_pair("Jerry",30);
+cout<<"name : "<<p2.first<<endl;
+cout<<"age : "<<p2.second<<endl;
+```
+
+### 六、有序键值对容器Map
+
+> `std::map`中的所有元素都是`pair`，所有元素都会根据元素的键值自动排序
+>
+> `map` 内部采用红黑树实现，红黑树的好处懂自懂
+>
+> 如果你需要存储一些键值对，那就可以考虑使用`map`
+
+#### Map的优良特性
+
+- 一对一处理数据提供了便捷
+- map内部已进行自动排序
+
+#### Map使用方法
+
+**1.构造函数**
+
+为了可以使用map，请在你的头文件中包含`#include<map>`
+
+```c++
+map<int,int> m; 	//创建pair类型为<int,int>的map
+map<T1,T2> m;		//创建pair类型为<T1,T2>的map
+map<int,int>m2(m);	//拷贝构造m2
+map<int,int>m3=m;	//赋值构造m3
+```
+
+**2.元素的增删改**
+
+- `m.insert(pair<T,T>)`：在容器中插入元素
+- `m.erase(key)`：删除容器中值为key的元素
+- `m.erase(pos)`：删除pos迭代器所指的元素，返回下一个元素的迭代器
+- `m.erase(begin,end)`：删除m中`[begin,end)`范围内的所有元素，返回下一个元素的迭代器
+- `m.clear()`：清空map
+
+**3.元素的查找和统计**
+
+- `m.count(key)`：统计key的元素个数，返回非0及1
+- `m.find(key)`：查找key是否存在,若存在，返回该键的元素的迭代器；若不存在，返回end()
+- `m.empty()` 返回容器是否为空
+- `m.size()` 返回容器内元素个数
+
+#### Multimap
+
+map和multimap区别：
+
+map不允许容器中有重复key值元素，multimap允许容器中有重复key值元素
+
+### 七、栈Stack
+
+> `std::stack`是STL提供的一种后进先出（LIFO）的容器适配器，仅支持查询或删除最后一个加入的元素（栈顶元素），不支持随机访问，且为了保证数据的严格有序性，不支持迭代器。
+
+#### Stack使用方法
+
+**1.构造方法**
+
+为了可以使用stack，请在你的头文件中包含`#include<stack>`
+
+```c++
+stack<T> s;
+```
+
+**2.常用函数**
+
+- `top()` 访问栈顶元素（如果栈为空，此处会出错）
+- `push(x)` 向栈中插入元素 x
+- `pop()` 删除栈顶元素
+- `size()` 查询容器中的元素数量
+- `empty()` 询问容器是否为空
+
+### 八、队列Queue
+
+> `std::queue`是STL提供的一种先进先出（FIFO）的容器适配器，仅支持查询或删除第一个加入的元素（队首元素），不支持随机访问，且为了保证数据的严格有序性，不支持迭代器。
+
+**1.构造方法**
+
+为了可以使用queue，请在你的头文件中包含`#include<queue>`
+
+```c++
+queue<T> s;
+```
+
+**2.常用函数**
+
+- `front()` 访问队首元素（如果队列为空，此处会出错）
+- `push(x)` 向队列中插入元素 x
+- `pop()` 删除队首元素
+- `size()` 查询容器中的元素数量
+- `empty()` 询问容器是否为空
 
 ## 算法algorhtim
 
-
+to be continued...
 

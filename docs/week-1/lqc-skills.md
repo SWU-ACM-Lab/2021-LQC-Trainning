@@ -1,10 +1,10 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-29 05:33:50
- * @LastEditTime: 2021-03-29 08:30:34
+ * @LastEditTime: 2021-03-29 13:56:14
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: /2021-LQC-Trainning/docs/week-1/lqc-skills.md
+ * @FilePath: \2021-LQC-Trainning\docs\week-1\lqc-skills.md
 -->
 # 蓝桥杯做题技巧 #
 
@@ -231,7 +231,7 @@ inline long long read()
 
 ## 5. 萌新三法 ##
 
-> 这一部分将在直播中展示，请关注公开课所使用的直播间。
+> 这一部分将在直播中展示，请关注公开课所使用的[直播间](https://live.bilibili.com/5184681)，且直播的录屏会在[西南大学商贸学院ACM](https://space.bilibili.com/1599858052)上传。
 
 ### 5.1 打表法 ###
 
@@ -242,5 +242,22 @@ inline long long read()
 ## 6. 做填空题的方法 ##
 
 ## 7. Excel和Python的高级应用 ##
+
+### 7.1 使用Excel计算日期 ###
+
+> 在比赛环境与自己的电脑上，一般都会装有Excel软件，我们能够用它来辅助我们完成题目。
+
+1. 新建一个工作表并打开
+2. 将其中的若干个使用到的单元格格式设置为`日期/时间`
+3. 用Excel内置的函数与运算计算我们需要的内容
+
+### 7.2 使用Python进行数学运算 ###
+
+> 在比赛环境与自己的电脑上，Python基本也是必装的，我们能够用Python强大的数学库来帮助我们进行数学运算，简化我们的做题过程。
+
+**比赛时只要能做出题目，用什么语言是根本不管的。**
+
+1. 打开Python
+2. 使用Python
 
 ## 8. RE/TLE/MLE的常见解决思路 ##

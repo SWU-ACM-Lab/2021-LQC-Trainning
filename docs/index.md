@@ -1,10 +1,10 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-25 14:51:11
- * @LastEditTime: 2021-03-29 05:34:43
+ * @LastEditTime: 2021-03-29 13:45:51
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: /2021-LQC-Trainning/docs/index.md
+ * @FilePath: \2021-LQC-Trainning\docs\index.md
 -->
 # 西南大学蓝桥杯参赛选手集训计划 #
 
@@ -29,10 +29,10 @@
     + 如何做填空题
     + Excel、Python的高级运用
     + RE、TLE、MLE的常见解决思路
-+ STL(C++ Strandrad Template Library)的使用【重点】
++ [STL(C++ Strandrad Template Library)的使用](week-1/cpp-stl.md)【重点】
     + 数据结构(vector, stack, queue, set, map)
     + 算法(string, cstdlib, sort)
-+ 简单数据结构
++ [简单数据结构](week-1/basic-datastructures.md)
 + 模拟【重点】
     + 穷举
     + 进制转换
@@ -119,7 +119,7 @@
 
 #### 3. STL的使用【重点】 ####
 
-这一部分请同学们阅读文档，将在我们的[Soj](https://oj.swu-acm.cn/discuss/6060bf8dafcb9485aabf727f)上展示。
+这一部分请同学们阅读[文档](week-1/cpp-stl.md)。如果有不懂的可以自己先动手试一下，还有疑惑的话就开`issue`询问。
 
 可以参考的资料有：
 

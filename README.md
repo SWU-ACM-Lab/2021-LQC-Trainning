@@ -1,13 +1,15 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-29 03:45:28
- * @LastEditTime: 2021-03-29 06:28:37
+ * @LastEditTime: 2021-03-29 20:38:30
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: /2021-LQC-Trainning/README.md
+ * @FilePath: \2021-LQC-Trainning\README.md
 -->
 
 # 2021 Southwest University Lanqiao Cup Trainning Course #
+
+<center><img src="https://sc-cos-1258290809.cos.ap-guangzhou.myqcloud.com/oj/SWU-ACMLab-0.png"/></center>
 
 ## Summary ##
 

@@ -339,8 +339,64 @@ queue<T> s;
 - `size()` 查询容器中的元素数量
 - `empty()` 询问容器是否为空
 
-## 算法algorhtim
+## 算法algorithm
 
-to be continued...
+> STL提供了非常多的实现算法的模板函数（查找、排序、操作），本版块将只介绍一些包含在`<algorithm>`常用的函数。完整的函数列表请单击链接：[戳我](https://zh.cppreference.com/w/cpp/algorithm)
+>
+> 友情提醒：aogorithm函数的范围定义为 `[first, last)` ，其中 `last` 指代要查询或修改的最后元素的*后一个*元素。
 
-喂喂喂，这里是星之卡比
+### 一、排序Sort
+
+> `sort()`作为`algorithm`中最常用（自认为）的模板函数，在竞赛中若无特殊要求一般都会使用该函数对序列进行排序操作，时间复杂度达到$O(nlogn)$，很秀
+
+**sort使用方法**
+
+```c++
+void sort( RandomIt first, RandomIt last, Compare comp );
+```
+
+函数中有三个参数，分别为`first`,`last`,`comp`.
+
+使用sort后以不降序排序范围 `[first, last)` 中的元素。不保证维持相等元素的顺序，若不自定义`comp`则默认为`less<T>()`，即从小到大排序，也可以写入`greater<T>()`，使得从大到小排序。
+
+如果看上面的这些不太直观，下面给出一些实例化的使用方法：
+
+```c++
+sort(a,a+10);		//代表从a[0]到a[9]
+sort(a+j+1,a+n+1);	//代表从a[j]到a[n]
+sort(a,a+10,less<int >());	//实现了从小到大，less可以不写
+sort(a,a+10,greater<int >());	//实现了从大到小
+
+////////使用结构体排序的例子////////
+struct lizi{
+  int begin;
+  int end;
+}
+lizi m[maxn];
+//实现了对m数组的以end从小到大排序
+bool comp(lizi a,lizi b){
+  return a.end<b.end;
+}
+//主函数里
+sort(m,m+maxn,comp);//用comp的比较方法进行排序
+```
+
+### 二、查找Find
+
+- `find`：顺序查找。`find(v.begin(), v.end(), value)`，其中 `value` 为需要查找的值
+- `find_end`：逆序查找。`find_end(v.begin(), v.end(), value)`
+- `binary_search`：二分查找。`binary_search(v.begin(), v.end(), value)`，其中 `value` 为需要查找的值
+- `lower_bound`：在一个有序序列中进行二分查找，返回指向第一个 **大于等于** 的元素的位置的迭代器。如果不存在这样的元素，则返回尾迭代器。`lower_bound(v.begin(),v.end(),x)`
+- `upper_bound`：在一个有序序列中进行二分查找，返回指向第一个 **大于** 的元素的位置的迭代器。如果不存在这样的元素，则返回尾迭代器。`upper_bound(v.begin(),v.end(),x)`
+
+### 三、操作Operation
+
+- `reverse`：翻转数组、字符串。`reverse(v.begin(), v.end())` 或 `reverse(a + begin, a + end)`
+
+- `unique`：去除容器中相邻的重复元素。`unique(ForwardIterator first, ForwardIterator last)`，返回值为指向 **去重后** 容器结尾的迭代器，原容器大小不变。与 `sort` 结合使用可以实现完整容器去重
+- `random_shuffle`：随机地打乱数组。`random_shuffle(v.begin(), v.end())` 或 `random_shuffle(v + begin, v + end)`
+
+- `next_permutation`：将当前排列更改为 **全排列中的下一个排列**。如果当前排列已经是 **全排列中的最后一个排列**（元素完全从大到小排列），函数返回 `false` 并将排列更改为 **全排列中的第一个排列**（元素完全从小到大排列）；否则，函数返回 `true`
+
+
+

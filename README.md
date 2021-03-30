@@ -9,7 +9,7 @@
 
 # 2021 Southwest University Lanqiao Cup Trainning Course #
 
-<center><img src="https://sc-cos-1258290809.cos.ap-guangzhou.myqcloud.com/oj/SWU-ACMLab-0.png"/></center>
+<div aligned="center"><img src="https://sc-cos-1258290809.cos.ap-guangzhou.myqcloud.com/oj/SWU-ACMLab-0.png"/></div>
 
 ## Summary ##
 

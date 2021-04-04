@@ -1,7 +1,7 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-25 14:51:11
- * @LastEditTime: 2021-03-29 13:45:51
+ * @LastEditTime: 2021-04-05 01:41:07
  * @LastEditors: Sunist Chan
  * @Description: 
  * @FilePath: \2021-LQC-Trainning\docs\index.md
@@ -33,23 +33,23 @@
     + 数据结构(vector, stack, queue, set, map)
     + 算法(string, cstdlib, sort)
 + [简单数据结构](week-1/basic-datastructures.md)
-+ 模拟【重点】
++ [模拟【重点】](week-1/cpp-simulation.md)
     + 穷举
     + 进制转换
     + 高精度
 
 **第二周**
 
-+ 数据结构算法【重点】
++ [数据结构算法【重点】](week-2/datasturcture-algorithm.md)
     + 最小生成树(Kruskal算法、Prim算法)
     + 并查集(路径压缩)
     + 拓扑排序(AOE网、AOV网)
     + 最短路(Dijkstra算法、Floyd算法)
     + 强连通分量(Tarjon算法、Kosaraju算法、Gabow算法)
-+ 搜索【重点】
++ [搜索【重点】](week-2/search.md)
     + 深度优先搜索、广度优先搜索
     + 记忆化搜索、路径回溯、剪枝
-+ 数论
++ [数论](week-2/number-theory.md)
     + 同余、素数、群论(欧几里得算法、拓展欧几里得算法)
 
 **第三周**
@@ -63,8 +63,6 @@
 + 蓝桥杯真题练习与评讲
 
 ## 详情 ##
-
-> ACM实验室即将从9102搬迁至8503，原实验室可能无人值守，有疑惑的同学可以在线上提出。
 
 ### 第一周 ###
 

@@ -4,7 +4,7 @@
 
 ### 生成树
 
-兄贵，学习$MST$之前先来了解一下什么是生成树吧，概念如下
+兄贵，学习MST​之前先来了解一下什么是生成树吧，概念如下
 
 > 对于无向带权图G和一棵树T来说，如果T是G的子图，则称T为G的树，如果T是G的生成子图，则称T是G的生成树。
 >
@@ -14,7 +14,8 @@
 
 最小生成树$(Minimum\ cost\ Spanning\ Tree)$，就是所有生成树中各边权值之和最小的那个生成树。
 
-![image-20210405004607377](datasturcture-algorithm.assets/image-20210405004607377.png)
+[![cMEOte.png](https://z3.ax1x.com/2021/04/05/cMEOte.png)](https://imgtu.com/i/cMEOte)
+
 
 > **构造最小生成树的准则**
 >
@@ -42,7 +43,7 @@
 
 **步骤演示**
 
-![image-20210405004840382](datasturcture-algorithm.assets/image-20210405004840382.png)
+[![cMEXfH.png](https://z3.ax1x.com/2021/04/05/cMEXfH.png)](https://imgtu.com/i/cMEXfH)
 
 ### Prim算法
 
@@ -62,7 +63,7 @@
 
 **步骤演示**
 
-![image-20210106094949412](datasturcture-algorithm.assets/image-20210106094949412.png)
+[![cMELkD.png](https://z3.ax1x.com/2021/04/05/cMELkD.png)](https://imgtu.com/i/cMELkD)
 
 ### 两种算法的比较
 

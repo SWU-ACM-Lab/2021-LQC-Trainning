@@ -99,13 +99,95 @@ Kruskal在算法效率上是比Prim快的，因为Kruskal只需一次对权重�
 PPOO...
 
 ## 拓扑排序
-
-### AOE网
-
+在学习拓扑排序之前，我们先来了解什么事AOV网。
 ### AOV网
+>- 用顶点表示活动，用弧表示活动间优先关系的**有向图**称为顶点表示活动的网(Activity On Vertex network)，简称AOV网。
+>- 在网中，若从顶点$i$到顶点$j$有一条有向路径，则$i$是$j$的前驱，$j$是$i$的后继。若$<v_i,v_j>$是图中有向边，则$v_i$是$v_j$的直接前驱；$v_j$是$v_i$的直接后继。
+>- **AOV网中不允许有回路**，这意味着某项活动以自己为先决条件。
+>- **对于给定的AOV网应首先判定网中是否存在环**。检测的办法是对有向图构造其顶点的**拓扑有序序列**，若网中所有顶点都在它的拓扑有序序列中，则该AOV网必定不存在环。
+[![AOV.png](https://z3.ax1x.com/2021/04/05/cMtvOf.png)](https://imgtu.com/i/cMtvOf)
 
+拓扑排序就是在AOV的基础上进行的。
+### 定义
+>拓扑排序(Topological Sort) 是由某个集合上的一个偏序得到该集合上的一个全序，这个操作就称之为拓扑排序。
+
+例如，一个软件专业的学生必须学习一系列基本课程，其中有些课是基础课，它独立于其它课程，如《高等数学》；而另一些课程必须在学完作为它的基础的先修课程才能开始。如在《程序设计基础》和《离散数学》学完之前就不能开始学习《数据结构》。
+### 构造方法
+>- 选择一个入度为 0 的顶点并输出。
+>- 从 AOV 网中删除此顶点及以此顶点为起点的所有关联边。
+>- 重复上述两步，直到不存在入度为 0 的顶点为止。
+>- 若输出的顶点数小于 AOV 网中的顶点数，则说明 AOV 网中回路，不是一个标准的 AOV 网。
+
+[![cMtbYd.png](https://z3.ax1x.com/2021/04/05/cMtbYd.png)](https://imgtu.com/i/cMtbYd)
+
+[更加具体的过程请参考](https://www.bilibili.com/video/BV1Ut41197TE?from=search&seid=17211423774363355925)
+
+### 练习
+接下来我们来练习一道有关拓扑排序的[题目](http://acm.hdu.edu.cn/showproblem.php?pid=1285)。
+>这道题是一道简单的拓扑排序，题中已经给出了`具体的提示`(其他说明：符合条件的排名可能不是唯一的，`此时要求输出时编号小的队伍在前`；输入数据保证是正确的，即输入数据确保一定能有一个符合要求的排名)。
+正是练习拓扑排序的好机会。
+
+#### AC代码
+```c++
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<cstring>
+using namespace std;
+const int maxn=1000;
+vector<int>vec[maxn]; // 邻接表建图。
+int du[maxn];
+int n,m;
+void topsort(){
+	priority_queue<int,vector<int>,greater<int> > s;//使用优先队列，来保证输出时编号小的队伍在前
+	int flag=0;
+	for(int i=1;i<=n;i++)
+	{
+		if(!du[i])//将入度为0的节点入队
+			s.push(i);
+	}
+	while(!s.empty())
+	{
+		int now=s.top();
+        s.pop();
+		if(flag==0)
+		{
+			cout<<now;
+			flag=1;
+		}
+		else
+			cout<<" "<<now; // 最后一名没有空格
+		
+		for(int i=0;i<vec[now].size();i++) //除去与该节点相关的节点的关联边。
+		{
+			if(--du[vec[now][i]]==0)	
+				s.push(vec[now][i]);
+		}
+	}
+}
+int main(){
+
+	while(cin>>n>>m)
+	{
+		memset(du,0,sizeof(du));
+		for(int i=1;i<=n;i++)
+			vec[i].clear();
+		for(int i=1;i<=m;i++)
+		{
+			int a,b;
+			cin>>a>>b;
+			vec[a].push_back(b);
+			du[b]++;
+		}
+		topsort();
+		cout<<endl;
+	}
+	return 0;	
+} 
+```
+[如果有兴趣可以试试做下道题，判断图中是否有环](http://acm.hdu.edu.cn/showproblem.php?pid=3342)
 ## 最短路
-
+### AOE网
 ### Dijkstra算法
 
 ### Floyd算法

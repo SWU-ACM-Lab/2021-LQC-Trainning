@@ -338,7 +338,7 @@ int main(){
 
 [更加具体的过程请参考](https://www.bilibili.com/video/BV1Ut41197TE?from=search&seid=17211423774363355925)
 
-#### 练习
+#### 题目练习
 接下来我们来练习一道有关拓扑排序的[题目](http://acm.hdu.edu.cn/showproblem.php?pid=1285)。
 >这道题是一道简单的拓扑排序，题中已经给出了`具体的提示`(其他说明：符合条件的排名可能不是唯一的，`此时要求输出时编号小的队伍在前`；输入数据保证是正确的，即输入数据确保一定能有一个符合要求的排名)。
 正是练习拓扑排序的好机会。
@@ -419,15 +419,88 @@ Dijkstra算法是单源最短路径，也就是说一个点到其他所有点的
 >- 第二组的顶点对应的距离是这样确定的：若图中有边$<v_0，v_i>$， vi的距离为此边所带的权值，否则$v_i$的距离为一个很大的数（大于所有顶点间的路径长度）。
 >- 然后每次从第二组的顶点中选一个其距离值为最小的$v_m$加入到第一组中。
 >- 每往第一组加入一个顶点$v_m$ ，就要对第二组中的各个顶点的距离值进行一次修正。若加进$V_m$做中间顶点使从$v_0$到$v_j$的最短路径比不加$v_m$的路径为短，则要修改$v_j$的距离值。修改后再选距离值最小的顶点加入到第一组中。
->- 重复3和4步骤直至所有点都在第一组中
+>- 重复3和4步骤直至所有点都在第一组中。
 
 [动画演示](https://www.bilibili.com/video/BV1q4411M7r9?from=search&seid=4117483000935554948)
 #### 时间复杂度
 >$O(n^2)$
-#### 代码
-这里可以尝试一下[这道题](https://www.luogu.com.cn/problem/P4779), 这道题对其算法进行了堆优化。
+#### 核心代码
 ```c++
-...
+void dijkstra(int s)   //s是起点
+{
+    memset(visit, false, sizeof(visit));    
+	visit[s] = true; //将s加入第一组集合
+    for(int i = 1; i <= n; i++){
+		//dist[i] 代表着s带i点的距离
+        dist[i] = graph[s][i];//对graph进行了处理，初始化矩阵全部初始化为无穷大。
+    }
+     
+    int index;
+    for(int i = 2; i <= n; i++){// 求出s到n-1个点的最短路径。
+        int mincost = INF;
+        for(int j = 1; j <= n; j++){//找出最小值那个点
+            if(!visit[j] && dist[j] < mincost){
+                mincost = dist[j];
+                index = j;    
+            }    
+        }
+        visit[index] = true;//把这个点加入第一组
+        for(int j = 1; j <= n; j++){//更新距离
+            if(!visit[j] && dist[j] > dist[index] + graph[index][j]){
+                dist[j] = dist[index] + graph[index][j];
+            }    
+        }    
+    }
+}
+```
+#### 题目练习
+[一道模板题](http://acm.hdu.edu.cn/showproblem.php?pid=2544)
+```c++
+#include<iostream>
+#include<cstring>
+#define inf 0x3f3f3f
+using namespace std;
+int n,m;
+int g[200][200];
+int d[200]; 
+bool vis[200];
+void dijkstra(int s){
+	memset(vis,0,sizeof(vis));
+	vis[s] = true;
+	for(int i=1;i<=n;i++){
+		d[i] = g[s][i];
+	}
+	int k = 0;
+	for(int i=2;i<=n;i++){
+		int mincost = inf;
+		for(int j=1;j<=n;j++){
+			if(!vis[j]&&d[j]<mincost){
+				k = j;
+				mincost = d[j];
+			}
+		}
+		vis[k] = true;
+		for(int j=1;j<=n;j++){
+			if(!vis[j]&&d[j]>d[k]+g[k][j]){
+				d[j] = d[k]+g[k][j];
+			}
+		}
+	}
+}
+int main(){
+	while(cin>>n>>m){
+		if(n==0 && m==0) break;
+		memset(g,inf,sizeof(g));
+		for(int i=1;i<=m;i++){//建图 
+			int a,b,c;
+			cin>>a>>b>>c;
+			g[a][b]=g[b][a]=c;//无向图
+		}
+		dijkstra(1);//从起点1出发
+		cout<<d[n]<<endl;
+	}
+}
+//还有一些题需要输出路径，这时只需要加一个path[][]数组即可。
 ```
 ### 三、Floyd算法
 Floyd算法是每一对顶点之间的最短路径。在此有两种解决方法：每次以一个顶点为源点，重复执行Dijkstra算法n次 和 弗洛伊德(Floyd)算法。

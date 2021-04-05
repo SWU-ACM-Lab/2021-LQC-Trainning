@@ -514,6 +514,21 @@ Floyd算法是每一对顶点之间的最短路径。在此有两种解决方法
 
 #### 时间复杂度
 Floyd算法的时间复杂度和重复执行Dijkstra算法n次的时间复杂度相同都是$O(n^3)$。但是Floyd的形式更加简单。
+#### 核心代码
+```c++
+void floyd()
+{
+    for(int k = 0; k < n; k ++){ //作为循环中间点的k必须放在最外一层循环 
+        for(int i = 0; i < n; i ++){
+            for(int j = 0; j < n; j ++){
+                if(dist[i][j] > dist[i][k] + dist[k][j]){
+                    dist[i][j] = dist[i][k] + dist[k][j];    //dist[i][j]得出的是i到j的最短路径 
+                }     
+            }    
+        }    
+    }    
+}
+```
 
 ## 强连通分量
 

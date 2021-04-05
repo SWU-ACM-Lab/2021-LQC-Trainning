@@ -83,6 +83,122 @@ kruskal: 时间复杂度为$O(eloge)$。 适合**稀疏图**
 
 Kruskal在算法效率上是比Prim快的，因为Kruskal只需一次对权重的排序就能找到最小生成树；而Prim算法需要多次对邻边排序才能找到
 
+### 练习
+
+[P3366 【模板】最小生成树](https://www.luogu.com.cn/problem/P3366)
+
+**Kruskal算法实现**
+
+```c++
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+int gen[5005],n,m,ans,cnt;
+
+struct Edge{
+    int u;//左边的点
+    int v;//右边的点
+    int w;//权值
+}edge[200005];
+
+bool cmp(Edge a,Edge b){//排序方法
+    return a.w<b.w;
+}
+int find(int x){
+    if(gen[x]==x) return x;
+    return gen[x]=find(gen[x]);
+}
+
+inline void kruskal(){
+    sort(edge+1,edge+m+1,cmp);//按照权值排序
+    for(int i=1;i<=m;i++){
+        int eu=find(edge[i].u);//找到左边点和右边点的老大
+        int ev=find(edge[i].v);
+        if(ev==eu){//如果老大是一个，说明这俩在一个集合中，跳过
+            continue;
+        }//否则
+        ans+=edge[i].w;//加上权值
+        gen[ev]=eu;//连接两个并查集
+        cnt++;
+        if(cnt==n-1){//退出的条件
+            break;
+        }
+    }
+}
+int main(){
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        gen[i]=i;
+    }
+    for(int i=1;i<=m;i++){
+        cin>>edge[i].u>>edge[i].v>>edge[i].w;
+    }
+    kruskal();
+    cout<<ans;
+    return 0;
+}
+```
+
+**Prim算法实现**
+
+```c++
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+using namespace std;
+const int maxn=200001;
+bool selected[maxn];//是否被选中，初始为0
+int minDist[maxn];//最小值，初始为INF
+int parent[maxn];//存储最小值的那个边的父亲，初始为-1，代表不存在
+int n,m,cnt,ans;
+
+struct Edge{
+	int begin;
+	int end;
+	int longth;
+}edge[maxn];
+
+void Prim(int x){
+	cnt++;
+	for(int i=1;i<=m;i++){
+		if(edge[i].begin==x&&minDist[edge[i].end]>edge[i].longth){
+			minDist[edge[i].end]=edge[i].longth;
+			parent[edge[i].end]=x;	
+		}else if(edge[i].end==x&&minDist[edge[i].begin]>edge[i].longth){
+			minDist[edge[i].begin]=edge[i].longth;
+			parent[edge[i].begin]=x;
+		}
+	}
+}
+int main(){
+	ios::sync_with_stdio(false);
+    cin.tie(0);
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		cin>>edge[i].begin>>edge[i].end>>edge[i].longth;
+	}
+	memset(minDist,0x3f3f3f,sizeof(minDist));//minDist初始化
+	selected[1]=1;//先选择1加入最小生成树中
+	Prim(1);//遍历查找
+	while(cnt!=n){//循环
+		int minn=0x3f3f3f;
+		int chose=1;
+		for(int i=1;i<=n;i++){
+			if(!selected[i]&&minDist[i]<minn){
+				minn=minDist[i];
+				chose=i;
+			}
+		}
+		selected[chose]=1;
+		ans+=minn;
+		Prim(chose);
+	}
+	cout<<ans;
+	return 0;
+}
+```
+
 ## 并查集
 
 ### 定义
@@ -96,7 +212,105 @@ Kruskal在算法效率上是比Prim快的，因为Kruskal只需一次对权重�
 
 ### 操作
 
-PPOO...
+在最开始的时候，每个元素都可以看做是一个单独的集合。我们在不断地进行查询和合并（并查集）请求操作中，元素之间进行合并。
+
+一般都会用帮派来形容并查集的操作。每个集合都有一个帮主（人为设定），他统领着集合中的所有元素；在每一次帮派大战（合并），战败的集合便会被战胜的集合吞并，战胜集合的帮主成为合并帮主的新帮主，循环往复。
+
+执行查询操作也很简单，只需要看他们的帮主是不是一个人即可~
+
+1.**初始化**
+
+把每个点所在集合初始化为其自身。（自己是自己的帮主）
+
+```c++
+for(int i=1;i<=n;i++){
+    f[i]=i;	//初始化
+}
+```
+
+2.**查找**
+
+> 查找元素所在的集合，即总帮主
+
+- 普通做法（递归）
+
+```c++
+int find(int k){
+    if(f[k]==k) return k;	//如果自己是自己所在集合的帮主，那它就是总帮主
+    return find(f[k]);		//如果不是，就找他老大哥的老大哥
+}
+```
+
+- 路径压缩
+
+上面这种做法很慢，所以我们可以直接在查找的过程中顺便把中间人士都指向总帮主
+
+```c++
+int find(int k){
+   if(f[k]==k) return k;	//如果自己是自己所在集合的帮主，那它就是总帮主
+    return f[k]=find(f[k]);		//把图中的人的老大哥都变成总帮主
+}
+```
+
+**3.查询**
+
+> 查询两个元素是否在同一个集合中
+
+```c++
+if(find(p1)==find(p2)){	//如果这俩隶属于同一个帮派
+    cout<<"YES"<<endl;
+}else{
+    cout<<"NO"<<endl;
+}
+```
+
+**4.合并**
+
+> 把两个不相交的集合合并为一个集合
+
+```c++
+f[find(a)]=find(b);		//让b和a的帮主变成一个人
+```
+
+### 练习
+
+[P3367 【模板】并查集](https://www.luogu.com.cn/problem/P3367)
+
+**AC代码**
+
+```c++
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int maxn=10005;
+int n,m,f[maxn];
+
+int find(int k){
+    if(f[k]==k) return k;//如果自己的老大就是自己，那它就是总老大
+    return f[k]=find(f[k]);//使途中经过的人的大哥也变成老大
+}
+
+int main(){
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        f[i]=i;//初始化i的老大为自己
+    }
+    for(int i=1,p1,p2,p3;i<=m;i++){
+        cin>>p1>>p2>>p3;
+        if(p1==1){//如果是执行合并操作
+            f[find(p2)]=find(p3);//让p2的老大变成p3的老大
+        }else{//查询操作
+            if(find(p2)==find(p3)){//如果p2的老大和p3的老大是一个人
+                cout<<"Y"<<endl;
+            }else{
+                cout<<"N"<<endl;
+            }
+        }
+    }
+
+    return 0;
+}
+```
 
 ## 拓扑排序
 在学习拓扑排序之前，我们先来了解什么事AOV网。

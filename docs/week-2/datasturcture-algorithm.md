@@ -12,7 +12,7 @@
 
 ### 二、最小生成树
 
-最小生成树$(Minimum\ cost\ Spanning\ Tree)$，就是所有生成树中各边权值之和最小的那个生成树。
+最小生成树![](http://latex.codecogs.com/gif.latex?(Minimum\ cost\ Spanning\ Tree))，就是所有生成树中各边权值之和最小的那个生成树。
 
 [![cMEOte.png](https://z3.ax1x.com/2021/04/05/cMEOte.png)](https://imgtu.com/i/cMEOte)
 

@@ -615,15 +615,15 @@ void tarjan(int u){
 #include<vector>
 #include<cmath>
 using namespace std;
-int index;
-int ans;
-int top;
+int index;//序数
+int ans;//答案
+int top;//栈顶
 int n,m;
-bool instack[100010];
+bool instack[100010];//记录这个节点是否在栈中
 int stack[100010];
 int dfn[100010];
 int low[100010];
-vector<int> M[100010];
+vector<int> M[100010];//图
 void tarjan(int u){
 	int v;
 	low[u] = dfn[u] = index++;
@@ -641,11 +641,11 @@ void tarjan(int u){
 	if(dfn[u] == low[u]){
 		int x=0;
 		do{
-			v = stack[top--];
+			v = stack[top--];//出栈
 			x++;
-			instack[v] = false;
+			instack[v] = false;//出栈
 		}while(u!=v);
-		if(x>1) ans++;
+		if(x>1) ans++;//如果这个强连通分量里面的节点数大于1
 	}
 }
 int main(){

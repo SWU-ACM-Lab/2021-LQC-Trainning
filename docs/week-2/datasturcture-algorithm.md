@@ -1,5 +1,14 @@
 # 数据结构算法
 
+ACM实验室大一成员作业，请上交到`src/homework/ds-alg`中，命名为自己的英文名，如`sunist.cpp`：
+
+1. 独立写出二叉树的四序遍历，要求格式：
+   ```cpp
+   // void* 是任意类型指针
+   void Traversal(void* root, void* type, void* delegate(void*));
+   ```
+2. 独立写出$Kruskal$算法和$Prim$算法。
+
 ## 最小生成树
 
 ### 一、生成树

@@ -1,10 +1,10 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-29 03:45:28
- * @LastEditTime: 2021-03-29 20:38:30
+ * @LastEditTime: 2021-04-06 08:16:50
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: \2021-LQC-Trainning\README.md
+ * @FilePath: /2021-LQC-Trainning/README.md
 -->
 
 # 2021 Southwest University Lanqiao Cup Trainning Course #
@@ -33,7 +33,7 @@ You can ask your question on issues page, describe your situation and then we wi
 
 This repository is licensed by `BSD-3-Clause License`.
 
-<center><img src = "https://upload.wikimedia.org/wikipedia/commons/d/d5/License_icon-bsd-88x31.svg" /></center>
+<div aligned="center"><img src = "https://upload.wikimedia.org/wikipedia/commons/d/d5/License_icon-bsd-88x31.svg" /></div>
 
 ## Contributions ##
 

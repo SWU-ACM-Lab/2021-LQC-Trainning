@@ -552,8 +552,16 @@ void floyd()
 [![cl77qI.png](https://z3.ax1x.com/2021/04/06/cl77qI.png)](https://imgtu.com/i/cl77qI)
 {1,2,3,4}为一个强连通分量,**{5},{6}也分别是两个强连通分量**。
 
-那我们该如何求得强连通分量呢？下我们学习三个算法：Tarjon算法、
-Kosaraju算法 和 Gabow算法。
+那我们该如何求得强连通分量呢？下我们学习三个算法：$Tarjan$算法、
+$Kosaraju$算法 和 $Gabow$算法。
+### 一、$Tarjan$算法
+Tarjon的主要思想就是采用`dfs`在图中找出`关键点`。这个关键点怎么理解呢？
+>既然我们是在寻找强连通分量，那么在这个强连通分量通必定存在一个或者几个环。那么我们将这个强连通量看作为一颗子树，找出它的树根，这个数据必须要遍历所有的点，且最后还要指向树根。
+这就是我们要寻找的关键点。如上图的中强连通量{1,2,3,4}中关键点是1或者4。
+
+>那我们是不是得出可以得出：当存在这个关键点是，那么任意的两个点都可以通过这个点相连接。那么就达到了强连通量的要求了。
+
+那如何寻找关键点呢？下来将一一阐述。****
 #### 算法描述
 1. 我们先定义两个数组$dfn[]$ 和 $low[]$，其中$dfn[u]$代表搜索到$u$时的次数编号，$low[u]$为$u$或者$u$的子树能够追寻的最小编号。
 2. 初始化$low[u] = dfn[u]$.
@@ -603,9 +611,59 @@ void tarjan(int u){
 (题链接)[https://www.luogu.com.cn/problem/P2863]
 纯模板题
 ```c++
-
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int index;
+int ans;
+int top;
+int n,m;
+bool instack[100010];
+int stack[100010];
+int dfn[100010];
+int low[100010];
+vector<int> M[100010];
+void tarjan(int u){
+	int v;
+	low[u] = dfn[u] = index++;
+	stack[++top] = u;
+	instack[u] = true;
+	for(int i=0;i<M[u].size();i++){
+		v = M[u][i];
+		if(!dfn[v]){
+			tarjan(v);
+			low[u] = min(low[u],low[v]);
+		}else if(instack[v]){
+			low[u] = min(low[u],dfn[v]);
+		} 
+	}
+	if(dfn[u] == low[u]){
+		int x=0;
+		do{
+			v = stack[top--];
+			x++;
+			instack[v] = false;
+		}while(u!=v);
+		if(x>1) ans++;
+	}
+}
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		M[x].push_back(y);
+	}
+	for(int i=1;i<=n;i++){
+		if(!dfn[i]){//若没有被访问过 
+			tarjan(i);
+		}
+	}
+	cout<<ans;
+	return 0;
+}
 ```
-### 一、Tarjon算法
 
 ### 二、Kosaraju算法
 

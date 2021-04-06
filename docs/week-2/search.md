@@ -1,3 +1,7 @@
+---
+
+---
+
 # 搜索
 
 ## 深度优先搜索
@@ -6,7 +10,7 @@
 
 例:以下图的二叉树为例，深度优先搜索的对树的访问顺序是A->B->D->G->H->C->E->J->F
 
-![image-20210405172952505](C:\Users\29247\AppData\Roaming\Typora\typora-user-images\image-20210405172952505.png)
+![image-20210405172952505](https://i.loli.net/2021/04/06/k8yeCiKsWSnaP7h.png)
 
 创建该树:
 
@@ -101,7 +105,7 @@ int main(){
 
 以下图图的遍历为例，DFS算法访问完A后，是先对B及B的子节点进行遍历，再对C及C的子节点遍历，即树的先序遍历。而BFS算法是访问完A后，对B、C节点先进行遍历，再对其子节点进行遍历，即先访问第一层，再访问第二层，再访问第三层……即树的层次遍历。对树的访问顺序是A->B->C->D->E->F->G->H->J
 
-![image-20210405172952505](C:\Users\29247\AppData\Roaming\Typora\typora-user-images\image-20210405172952505.png)
+![image-20210405172952505](https://i.loli.net/2021/04/06/k8yeCiKsWSnaP7h.png)
 
 ### BFS算法实现:
 
@@ -124,7 +128,7 @@ void bfs(TreeNode* node) {
 
 例：给定一个矩阵，求从矩阵左上角到右下角的需要走的最短的步数(起点也算一步)。说明:每次只能走一步，只能上下左右方向走，不能斜着走，红色格子表示墙，不能走，蓝色格子表示起点和终点，白色格子表示可以走的路径。(矩阵中红色格子用0表示，蓝色和白色用1表示)
 
-![image-20210405220452982](C:\Users\29247\AppData\Roaming\Typora\typora-user-images\image-20210405220452982.png)
+![image-20210405220452982](https://i.loli.net/2021/04/06/3dsy9v2xArzFwcG.png)
 
 第一行输入N,M,表示矩阵的行和列
 
@@ -210,7 +214,7 @@ int main() {
 
 例:求斐波那契数列：1，1，2，3，5……中第20个数字。
 
-![image-20210405231835821](C:\Users\29247\AppData\Roaming\Typora\typora-user-images\image-20210405231835821.png)
+![image-20210405231835821](https://i.loli.net/2021/04/06/TIlj7oKrVnBfgDe.png)
 
 DFS算法求解该题:
 

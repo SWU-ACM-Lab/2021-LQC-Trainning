@@ -554,6 +554,57 @@ void floyd()
 
 那我们该如何求得强连通分量呢？下我们学习三个算法：Tarjon算法、
 Kosaraju算法 和 Gabow算法。
+#### 算法描述
+1. 我们先定义两个数组$dfn[]$ 和 $low[]$，其中$dfn[u]$代表搜索到$u$时的次数编号，$low[u]$为$u$或者$u$的子树能够追寻的最小编号。
+2. 初始化$low[u] = dfn[u]$.
+3. 一直遍历到没有其他点可以走，维护$low[]$。 $low[u] = min (low[u],low[v])$其中$v$是$u$指向且`还在栈中`的点。
+4. 判断$dfn[u] == low[u]$，若成立，则找到了一个强连通量。这里为什么呢?因为树根先进栈，那么dfs到树的最后一个点时，那么这个点指向的是树根，因为树根先进栈，那么它的$low[u]$肯定是最小的，所以更新为low的值为树根的low，以此慢慢回溯得到的就是树根的$dfn[u] == low[u]$。
+5. 以此重复循环以上步骤就可以得出有多少个连通分量和那些点事同一个连通分量。
+6. 下面我将以上图中{1,2,3,4}连通量中的1节点作为树根举例。这里为了方便不考虑5，6节点。
+   >- $low[1] = dfn[1] = 1$
+   >- $low[3] = dfn[3] = 2$
+   >- $low[4] = dfn[4] = 3$
+   >- $low[4] = min(low[4],low[1]) = 1$
+   >- $low[3] = min(low[3],low[4]) = 1$
+   >- $low[2] = dfn[2] = 4$
+   >- $low[2] = min(low[2],low[4]) = 1$
+   >- $low[1] = min(low[2],low[1] = 1)$
+   >- $low[1] = dfn[1] = 1$
+   >即找到了一个连通分量。
+#### 核心代码
+```c++
+void tarjan(int u){
+	instack[u] = true;//u是否在栈中
+	stack[top] = u;//入栈
+	low[u] = dfn[u] = cnt++;//初始化
+	for(int i=0;i<vec[u].size();i++){
+		int v = vec[u][i];//下一个节点
+		if(!dfn(v)){
+			tarjan(v);
+			//回溯时更新
+			low[u] = min(low[u],low[v]);
+		}else if(instack(v)){//这个点还在栈中（这尤为重要，若要一个点个指向一个强连通分量，没有这句话，那么low将会变小）
+			/*访问到根节点，或者其他情况.这里需要注意一下。强连通图中可以用low[u] = min(low[u],low[v]);但是在割点这种问题就必须要下面这种格式。推荐使用这种*/
+			low[u] = min(low[u],dfn[v]);
+		}
+	}
+	int j;
+	if(low[u] == dfn[u]){
+		ans++;
+		do{
+			j=stack[top--];
+			instack[j] = false;
+			Belong[j] = ans;//染色，也就是哪一些是连通块。
+		}while(j!=u)
+	}
+}
+```
+#### 题目练习
+(题链接)[https://www.luogu.com.cn/problem/P2863]
+纯模板题
+```c++
+
+```
 ### 一、Tarjon算法
 
 ### 二、Kosaraju算法

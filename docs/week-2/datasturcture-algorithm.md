@@ -773,4 +773,67 @@ int main(){
 	return 0;
 }
 ```
-### 三、Gabow算法
+### 三、$Gabow$算法
+Gabow算法的思想与Tarjan一致。
+该算法使用了两个栈，一个顶点栈，另外一个栈的功能类似于Tarjan算法中的数组low。从起始顶点u处开始进行DFS过程中，当一条回路显示这组顶点都属于同一个强连通分支时，就会弹出栈二中顶点，只留下回边的目的顶点，也即搜索的起点u。
+
+当回溯到递归起始顶点u时，如果此时该顶点在栈二顶部，则说明该顶点是一个强联通分量的起始顶点，那么在该顶点之后搜索的顶点都属于同一个强连通分支。于是，从第一个栈中弹出这些点，形成一个强连通分支。
+
+### 题目练习
+还是Tarjan的[练习题](https://www.luogu.com.cn/problem/P2863)
+```c++
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int ans;//答案
+int t1;//栈顶
+int t2;//栈顶 
+int n,m;
+int index;
+int x;//记录该强连通节点的个数 
+int dfn[100010];
+int stack_2[100010]; 
+int stack_1[100010];//栈 
+int instack[100010];
+vector<int> M[100010];//图
+void Gabow(int u){
+	dfn[u] = ++index;
+	stack_1[++t1] = stack_2[++t2] = u;
+	instack[u] = 1;
+	for(int i=0;i<M[u].size();i++){
+		int v = M[u][i];
+		if(!dfn[v]){
+			Gabow(v);
+		}else if(instack[v]){
+			while(dfn[stack_2[t2]]>dfn[v]) t2--;
+		}
+	}
+	if(u==stack_2[t2]){
+		int j;
+		do{
+			j = stack_1[t1--];
+			x++;
+			instack[j] = 0;
+		}while(u!=j);
+	}
+	if(x>1) ans++;
+} 
+
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		M[x].push_back(y);
+	}
+	for(int i=1;i<=n;i++){
+		if(!dfn[i]){//若没有被访问过 
+			x = 0;
+			Gabow(i);
+		}
+	}
+	cout<<ans;
+	return 0;
+}
+```

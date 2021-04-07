@@ -5,6 +5,8 @@
 > 推荐的Markdown编辑器：[Typora](https://typora.io)
 > 
 > 本文提供了渲染完成的pdf版本：[number-theory.pdf](https://sc-cos-1258290809.cos.ap-guangzhou.myqcloud.com/number-theory.pdf)
+> 
+> 虽然提供了pdf版本，但是我们的文档里有动图，还是建议同学们在markdown编辑器上查看
 
 ACM实验室大一成员作业，请上交到`src/homework/number-theory`中，命名为自己的英文名，如`sunist.cpp`：
 
@@ -264,7 +266,7 @@ $$
 
 ## 5. 素数 ##
 
-### 如何判断素数 ###
+### 5.1 如何判断素数 ###
 
 **$O(n)$复杂度算法：**
 
@@ -300,16 +302,171 @@ bool isPrime(int n)
 
 其代码实现较上文差别不大，此处就不单独展示了。
 
-> 以下内容较难，有困难的同学可以选择跳过本节。
+**(选学)Fermat素性测试：**
 
-### 诶氏筛 ###
+我们可以根据`费马小定理`得出一种检验素数的思路：
 
+不断地选取在$[2, n-1]$中的基$a$，并检验是否每次都有$a^{n-1} \equiv 1 \pmod n$ 
 
+```cpp
+/**
+ * @description: 
+ * @param {int} n 要判断的数n
+ * @return {bool} n是否为素数，是则返回true
+ */
+bool millerRabin(int n) {
+    if (n < 3) 
+    {
+        return n == 2;
+    }
 
-### 线性筛 ###
+    // test_time 为测试次数,建议设为不小于 8
+    // 的整数以保证正确率,但也不宜过大,否则会影响效率
+    for (int i = 1; i <= test_time; ++i) 
+    {
+        int a = rand() % (n - 2) + 2;
+        if (quickPow(a, n - 1, n) != 1) 
+        {
+            return false;
+        }
+    }
+    return true;
+}
+```
 
+但是费马小定理的逆定理并不成立，这个方法也不是完全准确的，需要额外考虑`Carmichael Number`。这个方法的时间复杂度大致为$O(\log n)$。
 
-### (选学) `min_25`筛法 ###
+### 5.2 如何生成素数 ###
+
+在上面我们知道了如何判断一个数是不是素数，那么引申出了另一个问题，我们要如何求某个区间内的所有素数呢？
+
+我们当然可以按照上面的方法对区间内每一个数都进行一次判断，但我们稍作分析就知道，判断一个数是不是素数的时间复杂度是$O(\sqrt{n})$，那么判断$n$个数是不是素数的时间复杂度就是$O(n\log n)$，这其实是一个十分费时的算法，通常情况下会被比赛卡超时。
+
+然后我们就要讲到我们的两大法宝： `埃拉托斯特尼筛法`和`线性筛法`
+
+**埃氏筛**
+
+埃氏筛法的基本原理是：如果找到一个质数，那么这个质数的倍数都不是质数。
+
+我们只需要将范围内的所有数从头开始并标记出他们的倍数，遇到标记过的数就跳过，直到标记到最后为止。其过程表示如下：
+
+<div aligned="center"><img src = "https://www.pianshen.com/images/522/fc4debb1d5aae09a985ee372829aed02.gif"/></div>
+
+这个过程的`C++`实现如下：
+
+```cpp
+// include <cstdlib>
+
+/**
+ * @description: 埃拉托斯特尼筛法
+ * @param {int} n 要求的素数区间，即求[2, n]之间的素数
+ * @return {*} isPrime为true的均为素数
+ */
+void EratosthenesMethod(int n) 
+{
+    bool *tag = new bool[n];
+    for (int i = 0; i < n; ++i) 
+    {
+        isPrime[i] = true;
+    }
+
+    for (int i = 2; i * i < n; ++i) 
+    {
+        if (isPrime[i]) 
+        {
+            for (int j = i * i; j < n; j += i) 
+            {
+                isPrime[j] = false;
+            }
+        }
+    }
+}
+```
+
+上面的算法可以预先处理每个数都有的质因数以提升效率。其复杂度为$O(n \log \log n)$
+
+想看其复杂度计算过程吗？
+
+> 参考自[OI-Wiki.org](https://oi-wiki.org/math/sieve/)
+
+可以直接观察知埃氏筛法的复杂度为
+
+$$
+n \sum_p {1 \over p}
+$$
+
+调和级数$\displaystyle \sum_n {1 \over n} = \ln n$，由唯一分解定理可得：
+
+$$
+\sum_n {\frac{1}{n}} = \prod_{p} (1 + \frac{1}{p} + \frac{1}{p^2} + \cdots) = \prod_p {\frac{p}{p-1}}
+$$
+
+两边同时取对数，得：
+
+$$
+\begin{aligned}
+    \ln \sum_n {\frac{1}{n}} &= \ln \prod_p {\frac{p}{p-1}} \\
+    \ln \ln n &= \sum_p ({\ln p - \ln (p-1)})
+\end{aligned}
+$$
+
+易知$\displaystyle \int \frac{1}{x} dx = \ln x$，由微积分基本定理：
+
+$$
+\sum_p ({\ln p - \ln (p-1)}) = \sum_p {\int_{p-1}^{p} {\frac{1}{x}dx}}
+$$
+
+得
+
+$$
+\int_{p-1}^{p} {\frac{1}{x}dx} > \frac{1}{p}
+$$
+
+即
+
+$$
+\ln \ln n = \sum_p {\int_{p-1}^{p} {\frac{1}{x}dx}} > \sum_p {\frac{1}{p}}
+$$
+
+用$O$法表示即为$O(n \log \log n)$
+
+**线性筛**
+
+埃氏筛法仍有优化空间，它会将一个合数重复多次标记。有没有什么办法省掉无意义的步骤呢？答案是肯定的。
+
+如果能让每个合数都只被标记一次，那么时间复杂度就可以降到$O(n)$了。
+
+其`C++`代码实现如下：
+
+```cpp
+void EulerMethod (int n) {
+phi[1] = 1;
+for (int i = 2; i < n; ++i) 
+{
+if (!vis[i]) {
+phi[i] = i - 1;
+pri[cnt++] = i;
+}
+for (int j = 0; j < cnt; ++j) {
+if (1ll * i * pri[j] >= n) break;
+vis[i * pri[j]] = 1;
+if (i % pri[j]) {
+phi[i * pri[j]] = phi[i] * (pri[j] - 1);
+} else {
+// i % pri[j] == 0
+// 换言之，i 之前被 pri[j] 筛过了
+// 由于 pri 里面质数是从小到大的，所以 i 乘上其他的质数的结果一定也是
+// pri[j] 的倍数 它们都被筛过了，就不需要再筛了，所以这里直接 break
+// 掉就好了
+phi[i * pri[j]] = phi[i] * pri[j];
+break;
+}
+}
+}
+}
+```
+
+**(选学) `min_25`筛法**
 
 这个筛法是`min_25`大佬在比赛的时候发明的筛法，其时间复杂度为$O(n^{2 \over 3})$，其中很多内容~~我们也不会~~需要同学们自己理解
 

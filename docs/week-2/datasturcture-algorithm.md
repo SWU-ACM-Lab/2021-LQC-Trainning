@@ -1,6 +1,6 @@
 # 数据结构算法
 
-ACM实验室大一成员作业，请上交到`src/homework/ds-alg`中，命名为自己的英文名，如`sunist.cpp`：
+ACM实验室大一成员作业，请上交到`src/homework/ds-alg`中，命名为自己的英文名，如`sunist.cpp`，截止时间为4月10日（周六）中午12:00，作业如下：
 
 1. 独立写出二叉树的四序遍历，要求格式：
    ```cpp
@@ -540,9 +540,301 @@ void floyd()
 ```
 
 ## 强连通分量
+在了解下列算法之前我们介绍一些概念性问题。
 
-### 一、Tarjon算法
+>- 有向图G中，以顶点v为起点的弧的数目称为v的出度，记做$deg+ （v）$；以顶点v为终点的弧的数目称为v的入度，记做$deg-（v）$。
+>- 如果在有向图G中，有一条$<u，v>$向道路，则$v$称为$u$可达的，或者说，从$u$可达$v$。
+>- 如果有向图$G$的**任意两个顶点**都**互相**可达，则称图$G$是强连通图，如果有向图G存在两顶点$u$和$v$使得$u$不能到$v$，或者$v$不能到$u$，则称图$G$是强非连通图。
+>- 如果有向图$G$不是强连通图，他的子图$G2$是强连通图，点$v$属于$G2$，任意包含$v$强连通子图也是$G2$的子图，则称$G2$是有向图G的极大强连通子图，也称**强连通分量**(是对于极大连通子图来说的)。
+>- **强连通**其实就是指图中有两点$u，v$。使得能够找到有向路径从$u$到$v$并且也能够找到有向路径从$v$到$u$，则称$u$，$v$是强连通的。
+
+我们来通过下图来加强对这些概念的理解
+[![cl77qI.png](https://z3.ax1x.com/2021/04/06/cl77qI.png)](https://imgtu.com/i/cl77qI)
+{1,2,3,4}为一个强连通分量,**{5},{6}也分别是两个强连通分量**。
+
+那我们该如何求得强连通分量呢？下我们学习三个算法：$Tarjan$算法、
+$Kosaraju$算法 和 $Gabow$算法。
+### 一、$Tarjan$算法
+Tarjan的主要思想就是采用`dfs`的回溯来找到比他更早的时间点来确定他们是否为同一强连通分量。那么这点中一定有环，我们就可以利用这个环来判断强连通分量。
+那么具体操作是什么呢?
+#### 算法描述
+1. 我们先定义两个数组$dfn[]$ 和 $low[]$，其中$dfn[u]$代表搜索到$u$时的次数编号，$low[u]$为$u$或者$u$的子树能够追寻的最小编号。
+2. 初始化$low[u] = dfn[u]$.
+3. 一直遍历到没有其他点可以走或者已经走过的点，维护$low[]$。 $low[u] = min (low[u],low[v])$其中$v$是$u$指向且`还在栈中`的点。
+4. 判断$dfn[u] == low[u]$，若成立，则找到了一个强连通量。最后出栈。这里为什么呢?因为点$u$先进栈，那么dfs到最后一个点时，那么这个点指向之前入栈的点，那么它的$low[u]$肯定是较小的，所以更新为low的值为$u$的low，以此慢慢回溯得到的就是$dfn[u] == low[u]$。因为有环的存在，那么一定会有一个点指向起始点，那么这个点更新后他的low就是这个连通分量中最小的，所以一路回溯下去，最终就会的得到$dfn[u] == low[u]$。
+5. 以此重复循环以上步骤就可以得出有多少个连通分量和那些点事同一个连通分量。
+6. 下面我将以上图中{1,2,3,4}连通量中的1节点开始举例。这里为了方便不考虑5，6节点。
+   >- $low[1] = dfn[1] = 1$
+   >- $low[3] = dfn[3] = 2$
+   >- $low[4] = dfn[4] = 3$
+   >- $low[4] = min(low[4],low[1]) = 1$
+   >- $low[3] = min(low[3],low[4]) = 1$
+   >- $low[2] = dfn[2] = 4$
+   >- $low[2] = min(low[2],low[4]) = 1$
+   >- $low[1] = min(low[2],low[1] = 1)$
+   >- $low[1] = dfn[1] = 1$
+   >即找到了一个连通分量。
+
+这里可能表示不清楚或者有错误，具体可以参考下[这个视频](https://www.bilibili.com/video/BV19J411J7AZ?from=search&seid=15425029704146605635)
+**经过测试，一个连通的dfn不一定全部相同**
+#### 时间复杂度
+邻接表：$O(V+E)$
+邻接矩阵：$O(V^2)$
+#### 核心代码
+```c++
+void tarjan(int u){
+	instack[u] = true;//u是否在栈中
+	stack[top] = u;//入栈
+	low[u] = dfn[u] = ++cnt;//初始化
+	for(int i=0;i<vec[u].size();i++){
+		int v = vec[u][i];//下一个节点
+		if(!dfn(v)){
+			tarjan(v);
+			//回溯时更新
+			low[u] = min(low[u],low[v]);
+		}else if(instack(v)){//这个点还在栈中（这尤为重要，若要一个点个指向一个强连通分量，没有这句话，那么low将会变小）
+			/*访问到根节点，或者其他情况.这里需要注意一下。强连通图中可以用low[u] = min(low[u],low[v]);但是在割点这种问题就必须要下面这种格式。推荐使用这种*/
+			low[u] = min(low[u],dfn[v]);
+		}
+	}
+	int j;
+	if(low[u] == dfn[u]){//判断
+		ans++;
+		do{
+			j=stack[top--];
+			instack[j] = false;
+			Belong[j] = ans;//染色，也就是哪一些是连通块。
+		}while(j!=u)
+	}
+}
+```
+#### 题目练习
+[题链接](https://www.luogu.com.cn/problem/P2863)
+纯模板题
+```c++
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int index;//序数
+int ans;//答案
+int top;//栈顶
+int n,m;
+bool instack[100010];//记录这个节点是否在栈中
+int stack[100010];
+int dfn[100010];
+int low[100010];
+vector<int> M[100010];//图
+void tarjan(int u){
+	int v;
+	low[u] = dfn[u] = ++index;
+	stack[++top] = u;
+	instack[u] = true;
+	for(int i=0;i<M[u].size();i++){
+		v = M[u][i];
+		if(!dfn[v]){
+			tarjan(v);
+			low[u] = min(low[u],low[v]);
+		}else if(instack[v]){
+			low[u] = min(low[u],dfn[v]);
+		} 
+	}
+	if(dfn[u] == low[u]){
+		int x=0;
+		do{
+			v = stack[top--];//出栈
+			x++;
+			instack[v] = false;//出栈
+		}while(u!=v);
+		if(x>1) ans++;//如果这个强连通分量里面的节点数大于1
+	}
+}
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		M[x].push_back(y);
+	}
+	for(int i=1;i<=n;i++){
+		if(!dfn[i]){//若没有被访问过 
+			tarjan(i);
+		}
+	}
+	cout<<ans;
+	return 0;
+}
+```
 
 ### 二、Kosaraju算法
+kosaraju算法进行两次dfs，第一次在原图上进行，并在结点递归调用返回时将结点压入一个栈中，第二次dfs在原图的反图上进行，并且初始点选择栈中最上面的点，每次dfs所访问的点构成一个强连通分量。
+#### 算法原理
+>- 返图与原图的强连通分量相同
+>- 若原图从分量I能走到分量II，则反图不能从分量I走到分量II
 
-### 三、Gabow算法
+此算法的核心在于对于各个强连通分量进行了分离，也就是说，各个强连通分量之间无法到达。
+那么这是如何实现的呢？
+>- 我们把这些强连通分量缩点（也就是是说一个强连通分量看为一个点），这样我们就得到了一个有向无环图（DAG）。
+>- 我先对这个有向无环图进图DFS遍历，那么先遍历的那个缩点是这次（可能会有多次）遍历序列的根，那么这个缩点可以达到其他的强连通分量。子树也是如此
+>- 那么第二次对原图取反，对于这个根缩点就是第一个访问的，那么对他来说就没有进入的边，那么再对它进行遍历那么得到的一定就是一个强连通分量。
+>- 接下来在对栈里的其他点进行遍历的时候也不会连通到这个点，因为它已经被标记了。
+#### 算法步骤
+>- 对原图进行DFS，记录定点的后序遍历序列（入栈）
+>- 选出栈顶的顶点，对反图进行DFS，标记出能够遍历到的顶点，这些顶点就构成了一个强连通分量。
+>- 如果还有顶点没有被标记，重复过程2直至结束。
+#### 时间复杂度
+邻接表：$O(V+E)$
+邻接矩阵：$O(V^2)$
+但是tarjan的效率比Kosaraju高30%.
+#### 核心代码
+```c++
+void dfs1(int u){
+	for(int i=0;i<M1[u].size();i++){
+		int next = M1[u][i];
+		if(!v1[next]){
+			v1[next] = true;
+			dfs1(next);
+		}
+	}
+	stack[++top] = u;//后序入栈 
+}
+void dfs2(int u){//对反图进行dfs 
+	belongs[u] = j;//染色，把同一强连通分量的点统一标记
+	for(int i=0;i<M2[u].size();i++){
+		int next = M2[u][i];
+		if(!v2[next]){
+			v2[next] = true;
+			dfs2(next);
+		}
+	}
+}
+```
+
+#### 题目练习
+还是Tarjan的[练习题](https://www.luogu.com.cn/problem/P2863)
+```c++
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int ans;//答案
+int top;//栈顶
+int n,m;
+int x;//记录该强连通节点的个数 
+bool v1[100010];//第一遍历的标记 
+bool v2[100010]; //第二次遍历的标记 
+int stack[100010];//栈 
+vector<int> M1[100010];//图
+vector<int> M2[100010];//反图
+void dfs1(int u){
+	for(int i=0;i<M1[u].size();i++){
+		int next = M1[u][i];
+		if(!v1[next]){
+			v1[next] = true;
+			dfs1(next);
+		}
+	}
+	stack[++top] = u;//后序入栈 
+}
+void dfs2(int u){//对反图进行dfs 
+	x++;//记录 
+	for(int i=0;i<M2[u].size();i++){
+		int next = M2[u][i];
+		if(!v2[next]){
+			v2[next] = true;
+			dfs2(next);
+		}
+	}
+}
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		M1[x].push_back(y);
+		M2[y].push_back(x);//返图 
+	}
+	for(int i=1;i<=n;i++){
+		if(!v1[i]){//若没有被访问过 
+			v1[1] = true;
+			dfs1(i);
+		}
+	}
+	while(top){
+		int v = stack[top--];//出栈
+		x = 0;
+		if(!v2[v]){
+			v2[v] = true;
+			dfs2(v);
+		} 
+		if(x > 1) ans++;
+	} 
+	cout<<ans;
+	return 0;
+}
+```
+### 三、$Gabow$算法
+Gabow算法的思想与Tarjan一致。
+该算法使用了两个栈，一个顶点栈，另外一个栈的功能类似于Tarjan算法中的数组low。从起始顶点u处开始进行DFS过程中，当一条回路显示这组顶点都属于同一个强连通分支时，就会弹出栈二中顶点，只留下回边的目的顶点，也即搜索的起点u。
+
+当回溯到递归起始顶点u时，如果此时该顶点在栈二顶部，则说明该顶点是一个强联通分量的起始顶点，那么在该顶点之后搜索的顶点都属于同一个强连通分支。于是，从第一个栈中弹出这些点，形成一个强连通分支。
+
+### 题目练习
+还是Tarjan的[练习题](https://www.luogu.com.cn/problem/P2863)
+```c++
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int ans;//答案
+int t1;//栈顶
+int t2;//栈顶 
+int n,m;
+int index;
+int x;//记录该强连通节点的个数 
+int dfn[100010];
+int stack_2[100010]; 
+int stack_1[100010];//栈 
+int instack[100010];
+vector<int> M[100010];//图
+void Gabow(int u){
+	dfn[u] = ++index;
+	stack_1[++t1] = stack_2[++t2] = u;
+	instack[u] = 1;
+	for(int i=0;i<M[u].size();i++){
+		int v = M[u][i];
+		if(!dfn[v]){
+			Gabow(v);
+			//while(dfn[stack_2[t2]]>dfn[v]) t2--; 这里加不加好像都可以
+		}else if(instack[v]){
+			while(dfn[stack_2[t2]]>dfn[v]) t2--;
+		}
+	}
+	if(u==stack_2[t2]){
+		int j;
+		do{
+			j = stack_1[t1--];
+			x++;
+			instack[j] = 0;
+		}while(u!=j);
+	}
+	if(x>1) ans++;
+} 
+
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		M[x].push_back(y);
+	}
+	for(int i=1;i<=n;i++){
+		if(!dfn[i]){//若没有被访问过 
+			x = 0;
+			Gabow(i);
+		}
+	}
+	cout<<ans;
+	return 0;
+}
+```

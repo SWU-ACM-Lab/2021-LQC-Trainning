@@ -805,6 +805,7 @@ void Gabow(int u){
 		int v = M[u][i];
 		if(!dfn[v]){
 			Gabow(v);
+			//while(dfn[stack_2[t2]]>dfn[v]) t2--; 这里加不加好像都可以
 		}else if(instack[v]){
 			while(dfn[stack_2[t2]]>dfn[v]) t2--;
 		}

@@ -1,10 +1,10 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-25 14:51:11
- * @LastEditTime: 2021-04-05 01:41:07
+ * @LastEditTime: 2021-04-07 10:33:36
  * @LastEditors: Sunist Chan
  * @Description: 
- * @FilePath: \2021-LQC-Trainning\docs\index.md
+ * @FilePath: /2021-LQC-Trainning/docs/index.md
 -->
 # 西南大学蓝桥杯参赛选手集训计划 #
 
@@ -39,6 +39,8 @@
     + 高精度
 
 **第二周**
+
+> 对于ACM实验室的大一成员而言，本周留有作业，请在本周日前完成并提交。
 
 + [数据结构算法【重点】](week-2/datasturcture-algorithm.md)
     + 最小生成树(Kruskal算法、Prim算法)

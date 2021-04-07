@@ -576,9 +576,10 @@ Tarjan的主要思想就是采用`dfs`的回溯来找到比他更早的时间点
    >即找到了一个连通分量。
 
 这里可能表示不清楚或者有错误，具体可以参考下[这个视频](https://www.bilibili.com/video/BV19J411J7AZ?from=search&seid=15425029704146605635)
-**经过测试，一个连通的dfn比一定全部相同**
+**经过测试，一个连通的dfn不一定全部相同**
 #### 时间复杂度
-$O(V+E)$
+邻接表：$O(V+E)$
+邻接矩阵：$O(V^2)$
 #### 核心代码
 ```c++
 void tarjan(int u){
@@ -666,5 +667,110 @@ int main(){
 ```
 
 ### 二、Kosaraju算法
+kosaraju算法进行两次dfs，第一次在原图上进行，并在结点递归调用返回时将结点压入一个栈中，第二次dfs在原图的反图上进行，并且初始点选择栈中最上面的点，每次dfs所访问的点构成一个强连通分量。
+#### 算法原理
+>- 返图与原图的强连通分量相同
+>- 若原图从分量I能走到分量II，则反图不能从分量I走到分量II
 
+此算法的核心在于对于各个强连通分量进行了分离，也就是说，各个强连通分量之间无法到达。
+那么这是如何实现的呢？
+>- 我们把这些强连通分量缩点（也就是是说一个强连通分量看为一个点），这样我们就得到了一个有向无环图（DAG）。
+>- 我先对这个有向无环图进图DFS遍历，那么先遍历的那个缩点是这次（可能会有多次）遍历序列的根，那么这个缩点可以达到其他的强连通分量。子树也是如此
+>- 那么第二次对原图取反，对于这个根缩点就是第一个访问的，那么对他来说就没有进入的边，那么再对它进行遍历那么得到的一定就是一个强连通分量。
+>- 接下来在对栈里的其他点进行遍历的时候也不会连通到这个点，因为它已经被标记了。
+#### 算法步骤
+>- 对原图进行DFS，记录定点的后序遍历序列（入栈）
+>- 选出栈顶的顶点，对反图进行DFS，标记出能够遍历到的顶点，这些顶点就构成了一个强连通分量。
+>- 如果还有顶点没有被标记，重复过程2直至结束。
+#### 时间复杂度
+邻接表：$O(V+E)$
+邻接矩阵：$O(V^2)$
+但是tarjan的效率比Kosaraju高30%.
+#### 核心代码
+```c++
+void dfs1(int u){
+	for(int i=0;i<M1[u].size();i++){
+		int next = M1[u][i];
+		if(!v1[next]){
+			v1[next] = true;
+			dfs1(next);
+		}
+	}
+	stack[++top] = u;//后序入栈 
+}
+void dfs2(int u){//对反图进行dfs 
+	belongs[u] = j;//染色，把同一强连通分量的点统一标记
+	for(int i=0;i<M2[u].size();i++){
+		int next = M2[u][i];
+		if(!v2[next]){
+			v2[next] = true;
+			dfs2(next);
+		}
+	}
+}
+```
+
+#### 题目练习
+还是Tarjan的[练习题](https://www.luogu.com.cn/problem/P2863)
+```c++
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int ans;//答案
+int top;//栈顶
+int n,m;
+int x;//记录该强连通节点的个数 
+bool v1[100010];//第一遍历的标记 
+bool v2[100010]; //第二次遍历的标记 
+int stack[100010];//栈 
+vector<int> M1[100010];//图
+vector<int> M2[100010];//反图
+void dfs1(int u){
+	for(int i=0;i<M1[u].size();i++){
+		int next = M1[u][i];
+		if(!v1[next]){
+			v1[next] = true;
+			dfs1(next);
+		}
+	}
+	stack[++top] = u;//后序入栈 
+}
+void dfs2(int u){//对反图进行dfs 
+	x++;//记录 
+	for(int i=0;i<M2[u].size();i++){
+		int next = M2[u][i];
+		if(!v2[next]){
+			v2[next] = true;
+			dfs2(next);
+		}
+	}
+}
+int main(){
+	cin>>n>>m;
+	for(int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		M1[x].push_back(y);
+		M2[y].push_back(x);//返图 
+	}
+	for(int i=1;i<=n;i++){
+		if(!v1[i]){//若没有被访问过 
+			v1[1] = true;
+			dfs1(i);
+		}
+	}
+	while(top){
+		int v = stack[top--];//出栈
+		x = 0;
+		if(!v2[v]){
+			v2[v] = true;
+			dfs2(v);
+		} 
+		if(x > 1) ans++;
+	} 
+	cout<<ans;
+	return 0;
+}
+```
 ### 三、Gabow算法

@@ -60,7 +60,7 @@ void dfs(TreeNode* node) {
 
 例题:
 
-[全排列问题]: https://www.luogu.com.cn/problem/P1706
+[全排列问题]: (https://www.luogu.com.cn/problem/P1706)
 
 ```C++
 #include <iostream>
@@ -229,7 +229,7 @@ int dfs(int n){
 
 可以看出，用DFS求解该题时，在上图的dfs(2)会被重复计算，同理，当n更大时，被重复计算的数会更多。时间复杂度
 
-O(2^n^)
+O(2^n)
 
 ```c++
 int map[100] = { 0 };
@@ -252,7 +252,7 @@ int ms(int n) {
 
 例:
 
-[八皇后问题]: https://baike.baidu.com/item/%E5%85%AB%E7%9A%87%E5%90%8E%E9%97%AE%E9%A2%98/11053477?fr=aladdin
+[八皇后问题]: (https://baike.baidu.com/item/%E5%85%AB%E7%9A%87%E5%90%8E%E9%97%AE%E9%A2%98/11053477?fr=aladdin)
 
 回溯算法求解:
 

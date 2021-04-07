@@ -239,23 +239,23 @@ $$
 其中$p_i \in 素数集$，所以$a, b$的最大公约数可以表示为：
 
 $$
-(a, b) = p_1^{min(s_1, t_1)} \times p_2^{min(s_2, t_2)} \times \cdots \times p_n^{min(s_n, t_n)}
+(a, b) = p_1^{\min(s_1, t_1)} \times p_2^{\min(s_2, t_2)} \times \cdots \times p_n^{\min(s_n, t_n)}
 $$
 
 $a, b$的最小公倍数可以表示为：
 
 $$
-[a, b] = p_1^{max(s_1, t_1)} \times p_2^{max(s_2, t_2)} \times \cdots \times p_n^{max(s_n, t_n)}
+[a, b] = p_1^{\max(s_1, t_1)} \times p_2^{\max(s_2, t_2)} \times \cdots \times p_n^{\max(s_n, t_n)}
 $$
 
-而对于任意$p_i^{s_i}, p_i^{t_i}$，都有$p_i^{s_i} \times p_i^{t_i} = p_i^{min(s_i, t_i)} \times p_i^{max(s_i, t_i)}$恒成立。
+而对于任意$p_i^{s_i}, p_i^{t_i}$，都有$p_i^{s_i} \times p_i^{t_i} = p_i^{\min(s_i, t_i)} \times p_i^{\max(s_i, t_i)}$恒成立。
 
 则有：
 
 $$
 \begin{aligned}
     a \times b &= p_1^{s_1} \times p_1^{t_1} \times p_2^{s_2} \times p_2^{t_2} \times \cdots \times p_n^{s_n} \times p_n^{t_n} \\
-    &= p_1^{min(s_1, t_1)} \times p_1^{max(s_1, t_1)} \times p_2^{min(s_2, t_2)} \times p_2^{max(s_2, t_2)} \times \cdots \times p_n^{min(s_n, t_n)} \times p_n^{max(s_n, t_n)} \\
+    &= p_1^{\min(s_1, t_1)} \times p_1^{\max(s_1, t_1)} \times p_2^{\min(s_2, t_2)} \times p_2^{\max(s_2, t_2)} \times \cdots \times p_n^{\min(s_n, t_n)} \times p_n^{\max(s_n, t_n)} \\
     &= (a, b) \times [a, b]
 \end{aligned}
 $$
@@ -286,7 +286,19 @@ bool isPrime(int n)
 
 **$O(\sqrt{n})$复杂度算法：**
 
-在上面的算法中，其实并不需要按照定义一直判断到$n$
+在上面的算法中，其实并不需要按照定义一直判断到$n$，我们只需要判断从$2$到$\sqrt{n}$之间的整数就可以了。
+
+证明：
+
+若$n$不是素数，则其可以表示为$n = n_1 \times n_2$，我们不妨令$n_1 \leq n_2$。
+
+此时我们知道$n_1$可能取得最大值时，有$\max(n_1) = n \div \min(n_2)$，即$n_1 = n_2$，此时$n_1 = n \div n_2 = \sqrt{n}$。
+
+所以$n_1 \in [2, \sqrt{n}]$，即若$n$不是素数，其必有一个因数在区间$[2, \sqrt{n}]$。
+
+证明完毕。
+
+其代码实现较上文差别不大，此处就不单独展示了。
 
 > 以下内容较难，有困难的同学可以选择跳过本节。
 
@@ -302,7 +314,7 @@ bool isPrime(int n)
 这个筛法是`min_25`大佬在比赛的时候发明的筛法，其时间复杂度为$O(n^{2 \over 3})$，其中很多内容~~我们也不会~~需要同学们自己理解
 
 > 本节参考了大量资料：
-> + [Sum of Multiplicative Function - min_25's blog](https://min-25.hatenablog.com/entry/2018/11/11/172216)
+> + [Sum of Multiplicative Function - min_25's blog](https://\min-25.hatenablog.com/entry/2018/11/11/172216)
 > + [min_25筛 - 租酥雨的博客](https://www.cnblogs.com/zhoushuyu/p/9187319.html)
 
 min_25筛主要步骤由两步组成：

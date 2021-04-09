@@ -1,0 +1,60 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+struct Tree 
+{
+	char point_first;//连接点1
+	char point_second;//连接点2
+	int edge_value;//边权重
+}EDGE[10086];
+bool cmp(Tree a, Tree b)
+{
+	return a.edge_value<b.edge_value;
+}
+vector<char>contain;
+int kruskal(Tree *EDGE,int temp,int i=0)
+{
+	int ans = 0; 
+	sort(EDGE, EDGE+temp-1, cmp);
+	if (i == temp)
+	{
+		return ans;
+	}
+	else
+	{
+		
+		vector<char>::iterator it1=find(contain.begin(), contain.end(), EDGE[i].point_first); 
+		vector<char>::iterator it2 = find(contain.begin(), contain.end(), EDGE[i].edge_value);
+		if (it1 != contain.end() || it2 != contain.end())
+		{
+			ans += EDGE[i].edge_value;
+			
+			kruskal(EDGE, temp,i++ );
+			
+		}
+	}
+	
+	return ans;
+
+}
+int main()
+{
+	char first, second;
+	int  m=0;
+	 cin >> m;
+	int temp = m;
+	while (m > 0)
+	{
+		int i = 0;
+		cin >> EDGE[i].edge_value;
+		cin >> first;  EDGE[i].point_first=first;
+		cin >> second; EDGE[i].point_second=second;
+		i++;
+		m--;
+	}
+	int ans=kruskal(EDGE, temp);
+	cout << ans;
+	
+
+}

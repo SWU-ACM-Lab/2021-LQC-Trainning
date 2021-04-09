@@ -1,0 +1,78 @@
+#include<iostream>
+#include<map>
+#include<algorithm>
+
+using namespace std;
+struct Pircture
+{
+	int first_point;
+	int second_point;
+	int edge_value;
+}edge[114541];
+int n;
+int cmp(Pircture edge1, Pircture edge2)
+{
+	return edge1.edge_value < edge2.second_point;
+}
+int prim(Pircture edge[],int n)
+{
+	int max_func(int x, int y, Pircture edge[], int n);
+	sort(edge[0].edge_value, edge[n].edge_value, cmp);
+	int ans = ans + edge[0].edge_value;
+	 int x_flag = edge[0].first_point;
+	 int y_flag = edge[0].second_point;
+	 int a[4] = { max_func(x_flag, y_flag, edge, n) };
+	 while (n > 0)
+	{    
+	 if (a[2]== 0)
+	 {
+		 x_flag = x_flag;
+		 y_flag = a[1];
+		 max_func(x_flag, y_flag, edge, n--);
+	 }
+	 else
+	 {
+		 x_flag = y_flag;
+		 y_flag = a[1];
+		 max_func(x_flag, y_flag, edge, n--);
+	 }
+
+	}
+	 return (a[3] + ans);
+
+}
+int max_func(int x, int y, Pircture edge[], int n)
+{
+	int a = 0;
+	map<int, int>answer;
+	for (int i = 1; i < n; i++)
+	{
+		if (x == edge[i].first_point)
+		{
+			answer[edge[i].edge_value] = edge[i].second_point;
+		}
+		else if (y == edge[i].first_point)
+		{
+			answer[edge[i].edge_value] = edge[i].second_point;
+			a = 1;
+		}
+	}
+	map<int, int>::iterator it = answer.begin();
+	int ans = ans + it->second;
+	return it->first, it->second,a,ans;
+
+}
+int x_flag, y_flag, ans=0;
+int main()
+{
+	cin >> n;
+	int i = 0;
+	while (n > 0) {
+		int fp; cin >> fp;
+		edge[i].first_point = fp;
+		int sp; cin >> sp;
+		edge[i].second_point = sp;
+	}
+	int ans=prim(edge, n);
+	cout << ans;
+}

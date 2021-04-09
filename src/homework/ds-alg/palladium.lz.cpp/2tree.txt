@@ -1,0 +1,40 @@
+#include<iostream>
+using namespace std;
+typedef struct binary_Tree
+{
+	int data;
+	Tree* lfchild, * rgchild;
+}Tree;//二叉树的结构分为根的Tree
+void createbiTree(Tree *bitree)//构建二叉树的函数
+{
+	int leaf;
+	cin >> leaf;
+	if (leaf == '0') {
+		bitree = NULL;//ye!!!!!!!!!!!!!!!!!!!!!!!!
+	}
+	else
+	{
+		bitree = new Tree;//开辟新空间
+		bitree->data = leaf;//赋值
+		createbiTree(bitree->lfchild);//左孩子
+		createbiTree(bitree->rgchild);//右孩子
+	}
+}
+void preorderTraverse(Tree* bitree)
+{
+	preorderTraverse(bitree->lfchild);
+	cout << bitree->data;
+	preorderTraverse(bitree->rgchild);
+}
+void inorderTraverse(Tree* bitree)
+{
+	cout << bitree->data;
+	inorderTraverse(bitree->lfchild);
+	inorderTraverse(bitree->rgchild);
+}
+void postorderTraverse(Tree* bitree)
+{
+	postorderTraverse(bitree->rgchild);
+	cout << bitree->data;
+	postorderTraverse(bitree->lfchild);
+}

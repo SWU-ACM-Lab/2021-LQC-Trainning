@@ -1,7 +1,7 @@
 <!--
  * @Author: Sunist Chan
  * @Date: 2021-03-29 05:33:50
- * @LastEditTime: 2021-03-29 13:56:14
+ * @LastEditTime: 2021-04-10 01:18:35
  * @LastEditors: Sunist Chan
  * @Description: 
  * @FilePath: \2021-LQC-Trainning\docs\week-1\lqc-skills.md
@@ -81,7 +81,7 @@ int Fibonacci(int n) {
 
 而递归的劣势在于如果我们没有将递归过程优化，其执行效率与内存开销会膨胀到一个非常离谱的程度。我们用上文的`Fibonacci`函数来举例。
 
-如果我们要求$Fibonacci(10)$，那么程序在运行的时候，就会先计算$Fibonacci(9)$和$Fibonacci(8)$，而计算$Fibonacci(9)$的时候又会计算$Fibonacci(8)$和$Fibonacci(7)$。这时候我们就能够看出来，$Fibonacci(8)$其实已经算了两次了。但是我们的程序并不知道我们已经计算过了，它还是会傻傻的重新计算一次$Fibonacci(8)$，这样的后果是计算$Fibonacci(8)$所需计算的$Fibonacci(7,6,5,4,3,2,1)$又会被重复计算，如此循环，我们的程序就会将大量的时间浪费在计算已经完成的过程上，程序的执行效率就会大打折扣。
+如果我们要求$\operatorname{Fibonacci}(10)$，那么程序在运行的时候，就会先计算$\operatorname{Fibonacci}(9)$和$\operatorname{Fibonacci}(8)$，而计算$\operatorname{Fibonacci}(9)$的时候又会计算$\operatorname{Fibonacci}(8)$和$\operatorname{Fibonacci}(7)$。这时候我们就能够看出来，$\operatorname{Fibonacci}(8)$其实已经算了两次了。但是我们的程序并不知道我们已经计算过了，它还是会傻傻的重新计算一次$\operatorname{Fibonacci}(8)$，这样的后果是计算$\operatorname{Fibonacci}(8)$所需计算的$\operatorname{Fibonacci}(7,6,5,4,3,2,1)$又会被重复计算，如此循环，我们的程序就会将大量的时间浪费在计算已经完成的过程上，程序的执行效率就会大打折扣。
 
 ### 1.3 什么时候该使用递归 ###
 

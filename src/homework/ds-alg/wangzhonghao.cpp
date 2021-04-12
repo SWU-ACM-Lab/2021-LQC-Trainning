@@ -223,3 +223,75 @@ int main() {
 	Prim(G);
 	return 0;
 }
+//拓展欧几里得
+#include<iostream>
+using namespace std;
+int ojld(int a,int b,int &x,int &y){
+	if(b==0){
+		x=1;
+		y=0;
+		return a;
+	}
+	int num=ojld(b,a%b,x,y);
+	int temp=y;
+	y=x-(a/b)*y;
+	x=temp;
+	return num;
+}
+int main(){
+	int a,b,x,y;
+	cin>>a>>b>>x>>y;
+	int n=ojld(a,b,x,y);
+	cout<<n<<" "<<x<<" "<<y<<endl;
+	return 0;
+}
+//埃氏筛
+#include<iostream>
+using namespace std;
+bool a[1000];
+int main(){
+	int n;
+	cin>>n;
+	for(int i=0;i<=n;i++){
+		a[i]=false;
+	}
+	a[0]=a[1]=true; 
+	for(int i=2;i<=n;i++){
+		if(!a[i]){
+			for(int j=i;j*i<=n;j++){
+				a[j*i]=true;
+			}
+		}
+	}
+	for(int i=0;i<=n;i++){
+		if(!a[i])
+		cout<<i<<" ";
+	}
+	return 0;
+} 
+//欧拉欧拉欧拉筛
+#include<iostream>
+using namespace std;
+bool visit[999];
+int prime[999];
+int main(){
+	int n,k=1;
+	cin>>n;
+	for(int i=2;i<=n;i++){
+		visit[i]=false;
+	}
+	for(int i=2;i<=n;i++){
+		if(!visit[i]){
+			prime[k]=i;
+			k++;
+		}
+		for(int j=1;i*prime[j]<=n&&j<=k;j++){
+			visit[i*prime[j]]=true;
+			if(i%prime[j]==0)
+			break;
+		}
+	}
+	for(int i=1;i<k;i++)
+	cout<<prime[i]<<" ";
+	return 0;
+}

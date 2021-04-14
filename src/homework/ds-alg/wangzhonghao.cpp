@@ -295,3 +295,56 @@ int main(){
 	cout<<prime[i]<<" ";
 	return 0;
 }
+//快速矩阵求斐波那契数列
+#include<iostream>
+#include<cstring>
+using namespace std;
+#define MAXN 233
+struct matrix {
+	int arry[MAXN][MAXN];
+} ans, a;
+matrix matrixmul(matrix M, matrix N, int n) {
+	matrix C;
+	memset(C.arry, 0, sizeof(C.arry));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			for (int k = 0; k < n; k++) {
+				C.arry[i][j] = C.arry[i][j] + M.arry[i][k] * N.arry[k][j];
+			}
+		}
+	}
+	return C;
+}
+matrix quickmi(matrix M, int power, int n) {
+	for (int i = 0; i < n; i++) {
+		ans.arry[i][i] = 1;
+	}
+	while (power > 0) {
+		if (power & 1) {
+			ans = matrixmul(ans,M, n);
+		}
+		power >>= 1;
+		M = matrixmul(M, M, n);
+	}
+	return ans;
+}
+int main() {
+	matrix M;
+	int power, n;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> M.arry[i][j];
+		}
+	}
+	cin >> power;
+	M = quickmi(M,power, n);
+//	for (int i = 0; i < n; i++) {
+//		for (int j = 0; j < n; j++) {
+//			printf("%6d",M.arry[i][j]);
+//		}
+//		printf("\n");
+//	}
+	cout<<M.arry[0][1];
+	return 0;
+}

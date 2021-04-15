@@ -188,3 +188,94 @@ int main()
     AMGraph G;
     Krus(G);
 }
+//扩展欧几里得
+#include <iostream>
+using namespace std;
+int x,y;
+
+int exgcd(int a, int b, int &x, int &y)
+{
+    if(b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int gcd = exgcd(b,a%b,y,x);
+    y -= (a%b) * x;
+    return gcd;
+}
+//线性筛
+#include<iostream> 
+#include<cstring> 
+using namespace std; 
+const int maxn=1e7; 
+bool f[maxn]; 
+int prime[maxn]; 
+void listprime(int n) 
+{ 	
+    int num=0; 
+    memset(f,true,sizeof(f)); 
+    for(int i=2;i<=n;i++) 
+    { 
+        if(!f[i])
+        {
+            prime[++num]=i; 
+        } 
+        for(int j=1;j<=num&& i*prime[j]<=n;j++)  
+        { 
+            f[i*prime[j]]=false; 
+            if(i%prime[j]==0)
+            break; 
+        } 
+    } 
+    cout << num;
+} 
+int main()
+{ 
+    int n,m; 
+    cin>>n; 
+    listprime(n); 
+    cin>>m; 
+    for(int i=0;i<m;i++) 
+    { 	
+        int k; 	
+        cin>>k; 	
+        cout << num;
+    } 
+    return 0; 
+}
+//埃氏筛
+#include <iostream>
+#include <cstring>
+using namespace std;
+int prime[100000000];
+bool isprime[100000000];
+int n;
+int Era_prime(int n)
+{
+    int tol = 0;;
+    memset(isprime,true,sizeof(isprime));
+    isprime[0] = isprime[1] = false;
+    for(int i = 2; i <= n; ++i)
+    {
+        if(isprime[i])
+        {
+            prime[tol++] = i;
+            for(int j = 2 * i; j <= n; j += i)
+            {
+                isprime[j] = false;
+            }
+        }
+    }
+    return tol;
+}
+int main()
+{
+    std::ios::sync_with_stdio(false);
+    int n;
+    cin >> n;
+    int num = Era_prime(n);
+    cout << num;
+    return 0;
+}
